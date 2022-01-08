@@ -13,7 +13,7 @@ An easy pomodoro timer that can be used in application to perform action based o
 
 ## Installation
 
-```
+```shell
 #using npm
 npm install pomodoro-node
 
@@ -25,10 +25,8 @@ yarn add pomodoro-node
 
 ```js
 // using require
-const {PomodoroTimer} = require('pomodoro');
+const {PomodoroTimer} = require('pomodoro-node');
 
 // using import
-import {PomodoroTimer} from 'pomodoro';
+import {PomodoroTimer} from 'pomodoro-node';
 ```
-
-## Example

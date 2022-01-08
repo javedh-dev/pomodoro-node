@@ -8,13 +8,9 @@ var Mode;
 })((Mode = exports.Mode || (exports.Mode = {})));
 
 class PomodoroTimer {
-  constructor(
-    options = {
-      focusSlotDuration: 10,
-      breakSlotDuration: 2,
-    }
-  ) {
+  constructor(onModeChange, focusSlotDuration = 1500, breakSlotDuration = 300) {
     this.start = () => {
+      this.onModeChange(this.mode);
       this.updateStatus();
       this.timer = setInterval(this.updateStatus, 1000);
     };
@@ -25,8 +21,8 @@ class PomodoroTimer {
       this.updateReferenceTimestampIfRequired();
       const remainingTime =
         (this.mode === Mode.FOCUS
-          ? this.options.focusSlotDuration
-          : this.options.breakSlotDuration) - this.timeElapsedInMode;
+          ? this.focusSlotDuration
+          : this.breakSlotDuration) - this.timeElapsedInMode;
       this.status = {
         mode: this.mode,
         remainingMinutes: Math.floor(remainingTime / 60),
@@ -38,14 +34,17 @@ class PomodoroTimer {
       const timeRemainingInMode =
         this.timeElapsedInMode -
         (this.mode === Mode.FOCUS
-          ? this.options.focusSlotDuration
-          : this.options.breakSlotDuration);
+          ? this.focusSlotDuration
+          : this.breakSlotDuration);
       if (timeRemainingInMode > 0) {
         this.timeElapsedInMode = timeRemainingInMode;
         this.mode = this.mode === Mode.FOCUS ? Mode.BREAK : Mode.FOCUS;
+        this.onModeChange(this.mode);
       }
     };
-    this.options = options;
+    this.onModeChange = onModeChange;
+    this.focusSlotDuration = focusSlotDuration;
+    this.breakSlotDuration = breakSlotDuration;
     this.mode = Mode.FOCUS;
     this.timeElapsedInMode = 0;
   }

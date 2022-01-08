@@ -1,8 +1,3 @@
-interface PomodoroOptions {
-  focusSlotDuration: number;
-  breakSlotDuration: number;
-}
-
 export declare enum Mode {
   FOCUS = "FOCUS",
   BREAK = "BREAK",
@@ -17,15 +12,22 @@ interface PomodoroStatus {
 export declare class PomodoroTimer {
   status: PomodoroStatus | undefined;
   mode: Mode;
-  start: () => void;
-  stop: () => void;
-  private options;
   private timeElapsedInMode;
   private timer;
+  focusSlotDuration: number;
+  breakSlotDuration: number;
+  start: () => void;
+  stop: () => void;
+  private readonly onModeChange;
+
+  constructor(
+    onModeChange: (newMode: Mode) => void,
+    focusSlotDuration?: number,
+    breakSlotDuration?: number
+  );
+
   private updateStatus;
   private updateReferenceTimestampIfRequired;
-
-  constructor(options?: PomodoroOptions);
 }
 
 export {};

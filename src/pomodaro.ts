@@ -1,8 +1,3 @@
-interface PomodoroOptions {
-  focusSlotDuration: number;
-  breakSlotDuration: number;
-}
-
 export enum Mode {
   FOCUS = "FOCUS",
   BREAK = "BREAK",
@@ -17,22 +12,26 @@ interface PomodoroStatus {
 export class PomodoroTimer {
   status: PomodoroStatus | undefined;
   mode: Mode;
-  options: PomodoroOptions;
   private timeElapsedInMode: number;
   private timer: any;
+  focusSlotDuration: number;
+  breakSlotDuration: number;
+  private readonly onModeChange: (newMode: Mode) => void;
 
   constructor(
-    options: PomodoroOptions = {
-      focusSlotDuration: 1500,
-      breakSlotDuration: 300,
-    }
+    onModeChange: (newMode: Mode) => void,
+    focusSlotDuration: number = 1500,
+    breakSlotDuration: number = 300
   ) {
-    this.options = options;
+    this.onModeChange = onModeChange;
+    this.focusSlotDuration = focusSlotDuration;
+    this.breakSlotDuration = breakSlotDuration;
     this.mode = Mode.FOCUS;
     this.timeElapsedInMode = 0;
   }
 
   public start = () => {
+    this.onModeChange(this.mode);
     this.updateStatus();
     this.timer = setInterval(this.updateStatus, 1000);
   };
@@ -45,8 +44,8 @@ export class PomodoroTimer {
     this.updateReferenceTimestampIfRequired();
     const remainingTime =
       (this.mode === Mode.FOCUS
-        ? this.options.focusSlotDuration
-        : this.options.breakSlotDuration) - this.timeElapsedInMode;
+        ? this.focusSlotDuration
+        : this.breakSlotDuration) - this.timeElapsedInMode;
     this.status = {
       mode: this.mode,
       remainingMinutes: Math.floor(remainingTime / 60),
@@ -59,11 +58,12 @@ export class PomodoroTimer {
     const timeRemainingInMode =
       this.timeElapsedInMode -
       (this.mode === Mode.FOCUS
-        ? this.options.focusSlotDuration
-        : this.options.breakSlotDuration);
+        ? this.focusSlotDuration
+        : this.breakSlotDuration);
     if (timeRemainingInMode > 0) {
       this.timeElapsedInMode = timeRemainingInMode;
       this.mode = this.mode === Mode.FOCUS ? Mode.BREAK : Mode.FOCUS;
+      this.onModeChange(this.mode);
     }
   };
 }
