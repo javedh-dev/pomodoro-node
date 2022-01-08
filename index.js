@@ -1,3 +1,3 @@
-const { PomodoroTimer } = require("./src/pomodaro");
+const { PomodoroTimer } = require("./build/pomodaro");
 
 exports.PomodoroTimer = PomodoroTimer;

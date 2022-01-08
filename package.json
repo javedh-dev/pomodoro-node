@@ -13,7 +13,12 @@
   "jest": {
     "transform": {
       "^.+\\.(ts|tsx)$": "ts-jest"
-    }
+    },
+    "collectCoverage": true,
+    "coverageReporters": [
+      "html",
+      "lcov"
+    ]
   },
   "devDependencies": {
     "@types/jest": "^27.4.0",

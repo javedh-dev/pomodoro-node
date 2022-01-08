@@ -3,4 +3,5 @@
 src/
 test/
 coverage/
+out/
 pomodoro-node.iml

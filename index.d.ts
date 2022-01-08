@@ -1,1 +1,1 @@
-export * from "./src/pomodaro";
+export * from "./build/pomodaro";
