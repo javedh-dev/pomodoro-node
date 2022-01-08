@@ -17,14 +17,14 @@ interface PomodoroStatus {
 export class PomodoroTimer {
   status: PomodoroStatus | undefined;
   mode: Mode;
-  private options: PomodoroOptions;
+  options: PomodoroOptions;
   private timeElapsedInMode: number;
   private timer: any;
 
   constructor(
     options: PomodoroOptions = {
-      focusSlotDuration: 10,
-      breakSlotDuration: 2,
+      focusSlotDuration: 1500,
+      breakSlotDuration: 300,
     }
   ) {
     this.options = options;

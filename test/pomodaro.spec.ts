@@ -9,6 +9,8 @@ describe("Pomodoro Timer", () => {
     const timer = new PomodoroTimer();
     expect(timer.mode).toBe(Mode.FOCUS);
     expect(timer.status).toBeUndefined();
+    expect(timer.options.focusSlotDuration).toBe(1500);
+    expect(timer.options.breakSlotDuration).toBe(300);
   });
 
   test("start pomodoro timer updates the status every second", () => {
