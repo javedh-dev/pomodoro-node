@@ -3,4 +3,5 @@
 /.idea/
 /coverage/
 /out/
+package-lock.json
 pomodoro-node.iml
