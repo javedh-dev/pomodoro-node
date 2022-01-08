@@ -1,26 +1,41 @@
-name: Publish npm package to node.js
+name: Build & test after merge
 
 on:
-  push:
-    branches:
-      - master
   release:
     types:
-      - created
-      - prereleased
+      - published
 
 jobs:
-  bulidPublish:
-    name: Build & Publish
+  Bulid_Publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - name: Checkout branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v1
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org/
-      - run: npm install
-      - run: npm ci
-      - run: npm publish --access public
+      - name: Run npm ci
+        run: npm ci
+      - name: Set global git username
+        run: git config --global user.name "Javed Hussain"
+      - name: Set global git useremail
+        run: git config --global user.email "javedh-dev@hmail.com"
+      - name: Set module version as release tag
+        run: npm version ${{ github.event.release.tag_name }}
+      - name: Build module
+        run: npm run build
+      - name: Run all tests
+        run: npm test
+      - name: Publish module to npm
+        run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Update version in package.json
+      - run: git push
+        env:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

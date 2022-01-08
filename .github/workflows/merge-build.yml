@@ -1,0 +1,28 @@
+name: Build & test after merge
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  bulidPublish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Use Node.js 16
+        uses: actions/setup-node@v1
+        with:
+          node-version: 16
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: git config --global user.name "Javed Hussain"
+      - run: git config --global user.email "javedh-dev@hmail.com"
+      - run: npm version ${{ github.event.release.tag_name }}
+      - run: npm run build
+      - run: npm test
