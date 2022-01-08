@@ -2,7 +2,8 @@ name: Publish npm package to node.js
 
 on:
   release:
-    types: [created]
+    types:
+      - created
 
 jobs:
   bulidPublish:
