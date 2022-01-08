@@ -1,4 +1,4 @@
-name: Build & test after merge
+name: Publish to npm
 
 on:
   release:
