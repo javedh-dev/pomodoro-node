@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es2016",
+    "module": "commonjs",
+    "declaration": true,
+    "outDir": "./build",
+    "strict": true
+  },
+  "exclude": [
+    "test"
+  ]
+}
