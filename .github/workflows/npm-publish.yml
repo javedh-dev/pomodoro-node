@@ -1,9 +1,13 @@
 name: Publish npm package to node.js
 
 on:
+  push:
+    branches:
+      - master
   release:
     types:
       - created
+      - prereleased
 
 jobs:
   bulidPublish:
