@@ -1,9 +1,8 @@
 # pomodoro-node
 
-[![GitHub version](https://badge.fury.io/gh/javedh-dev%2Fpomodoro-node.svg)](https://badge.fury.io/gh/javedh-dev%2Fpomodoro-node)
+[![npm version](https://badge.fury.io/js/pomodoro-node.svg)](https://badge.fury.io/js/pomodoro-node)
 [![Build](https://github.com/javedh-dev/pomodoro-node/actions/workflows/merge-build.yml/badge.svg)](https://github.com/javedh-dev/pomodoro-node/actions/workflows/merge-build.yml)
 [![Code Coverage](https://codecov.io/gh/javedh-dev/pomodoro-node/branch/master/graph/badge.svg?token=M8LDDDU3KV)](https://codecov.io/gh/javedh-dev/pomodoro-node)
-[![npm version](https://badge.fury.io/js/pomodoro-node.svg)](https://badge.fury.io/js/pomodoro-node)
 
 An easy pomodoro timer that can be used in application to perform action based on pomodoro technique
 
