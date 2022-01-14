@@ -3,21 +3,26 @@ export declare enum Mode {
   BREAK = "BREAK",
 }
 
-interface PomodoroStatus {
+export declare enum State {
+  READY = "READY",
+  RUNNING = "RUNNING",
+  PAUSE = "PAUSE",
+}
+
+export interface PomodoroStatus {
+  state: State;
   mode: Mode;
   remainingMinutes: number;
   remainingSeconds: number;
 }
 
 export declare class PomodoroTimer {
-  status: PomodoroStatus | undefined;
-  mode: Mode;
+  private mode;
+  private state;
   private timeElapsedInMode;
   private timer;
   focusSlotDuration: number;
   breakSlotDuration: number;
-  start: () => void;
-  stop: () => void;
   private readonly onModeChange;
 
   constructor(
@@ -26,8 +31,11 @@ export declare class PomodoroTimer {
     breakSlotDuration?: number
   );
 
+  start: () => void;
+  stop: () => void;
+  pause: () => void;
+  reset: (focusSlotDuration: number, breakSlotDuration: number) => void;
+  getStatus: () => PomodoroStatus;
   private updateStatus;
   private updateReferenceTimestampIfRequired;
 }
-
-export {};

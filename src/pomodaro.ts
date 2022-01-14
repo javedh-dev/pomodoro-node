@@ -3,15 +3,22 @@ export enum Mode {
   BREAK = "BREAK",
 }
 
-interface PomodoroStatus {
+export enum State {
+  READY = "READY",
+  RUNNING = "RUNNING",
+  PAUSE = "PAUSE",
+}
+
+export interface PomodoroStatus {
+  state: State;
   mode: Mode;
   remainingMinutes: number;
   remainingSeconds: number;
 }
 
 export class PomodoroTimer {
-  status: PomodoroStatus | undefined;
-  mode: Mode;
+  private mode: Mode;
+  private state: State;
   private timeElapsedInMode: number;
   private timer: any;
   focusSlotDuration: number;
@@ -27,31 +34,53 @@ export class PomodoroTimer {
     this.focusSlotDuration = focusSlotDuration;
     this.breakSlotDuration = breakSlotDuration;
     this.mode = Mode.FOCUS;
+    this.state = State.READY;
     this.timeElapsedInMode = 0;
   }
 
   public start = () => {
-    this.onModeChange(this.mode);
-    this.updateStatus();
+    if (this.state === State.READY) {
+      this.mode = Mode.FOCUS;
+      this.onModeChange(this.mode);
+    }
+    if (this.timer) clearInterval(this.timer);
+    this.state = State.RUNNING;
     this.timer = setInterval(this.updateStatus, 1000);
   };
 
   public stop = () => {
-    clearInterval(this.timer);
+    this.pause();
+    this.state = State.READY;
+    this.timeElapsedInMode = 0;
   };
 
-  private updateStatus = () => {
-    this.updateReferenceTimestampIfRequired();
+  public pause = () => {
+    clearInterval(this.timer);
+    this.state = State.PAUSE;
+  };
+
+  public reset = (focusSlotDuration: number, breakSlotDuration: number) => {
+    this.stop();
+    this.focusSlotDuration = focusSlotDuration;
+    this.breakSlotDuration = breakSlotDuration;
+  };
+
+  public getStatus = (): PomodoroStatus => {
     const remainingTime =
       (this.mode === Mode.FOCUS
         ? this.focusSlotDuration
         : this.breakSlotDuration) - this.timeElapsedInMode;
-    this.status = {
+    return {
+      state: this.state,
       mode: this.mode,
       remainingMinutes: Math.floor(remainingTime / 60),
       remainingSeconds: remainingTime % 60,
     };
+  };
+
+  private updateStatus = () => {
     this.timeElapsedInMode += 1;
+    this.updateReferenceTimestampIfRequired();
   };
 
   private updateReferenceTimestampIfRequired = () => {
